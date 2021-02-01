@@ -1,0 +1,97 @@
+* Modes of operations
+** Admin Mode
+** Subscriber Mode
+*** Subscriber Class A
+*** Subscriber Class B
+
+
+* Structs
+** Book
+*** Name 
+*** Author
+*** Number of available copies - copies
+*** ID
+** Subscriber A
+*** Name
+*** Category (1 for A)
+*** ID
+    auto-generated
+*** bookID[4]
+    Array for storing the ID of borrowed books.
+    A category-A subscriber can borrow 4 books at a time.
+*** bookDueDate[4]
+    Array for recording the time of storage.
+*** status
+    number of books the subscriber has borrowed.
+*** fineboundary
+    Seconds for which the subscriber can keep a book.
+    Fineboundary is set to 30 minutes.
+** Subscriber B
+*** Name
+*** Category (1 for A)
+*** ID
+    auto-generated
+*** bookID[4]
+    Array for storing the ID of borrowed books.
+    A category-A subscriber can borrow 4 books at a time.
+*** bookDueDate[4]
+    Array for recording the time of storage.
+*** status
+    number of books the subscriber has borrowed.
+*** fineboundary
+    Seconds for which the subscriber can keep a book.
+    Fineboundary is set to 30 minutes.
+
+
+* Admin Mode
+  password prompt - iamadmin
+** Add book
+   Provide name, author and available number of copies of the book.
+   Book will be added to the database "BookDatabase".
+** Update the number of available copies
+   Provide bookID, increment or decrement of the number of copies.
+   Error if available copies decrease below 0 or
+   if book ID does not match.
+** Add subscriber
+   Provide name and category of the new subscriber.
+   Subscriber will be added to either SubscriberDatabaseA or 
+   SubscriberDatabaseB depending on the provided category.
+** Display all subscribers
+** Display all books
+** Search for books
+   Proper capitalization and spacing is important.
+*** Search by name
+    Provide a partial name - gives back all the books which start with the provided string.
+*** Search by author
+    Provide a partial author name - gives back all the books that are written by the authors whose starting letters match with the provided string.
+** Search for subscribers
+   Proper capitalization and spacing is important.
+*** Search by name
+    Provide name and category/class of the subscriber
+*** Search by book borrowed
+    Provide the bookID
+*** Search by overdue fines
+    Prints the IDs of the subscribers having an impending fine from both the categories.
+
+
+* Subscriber Mode
+  Both the subscriber classes have the same functionality.
+  The only difference is in the number of books one can borrow at once.
+  Select category
+  Prompt for subscriber ID
+** Borrow book
+   Provide book ID
+   Stores the time of borrow in bookDueDate and the book ID in bookID field of subscriber struct.
+   Increases status by 1.
+** Return book
+   Provide book ID
+   Resets the bookDueDate and bookID.
+   Reduces status by 1.
+** Search for books
+   Proper capitalization and spacing is important.
+*** Search by name
+    Provide a partial name - gives back all the books which start with the provided string.
+*** Search by author
+    Provide a partial author name - gives back all the books that are written by the authors whose starting letters match with the provided string.
+** Display borrowed books
+** Display total fine

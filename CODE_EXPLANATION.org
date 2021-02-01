@@ -1,0 +1,167 @@
+System Specs
+Ubuntu 18.04.4 LTS
+64-bit
+
+* STRUCTS
+** Book
+*** Name 
+*** Author
+*** Number of available copies - copies
+*** ID
+** ClassASubscriber
+*** Name
+*** Category (1 for A)
+*** ID
+    auto-generated
+*** bookID[4]
+    Array for storing the ID of borrowed books.
+    A category-A subscriber can borrow 4 books at a time.
+*** bookDueDate[4]
+    Array for recording the time of storage.
+*** status
+    number of books the subscriber has borrowed.
+*** fineboundary
+    Seconds for which the subscriber can keep a book.
+    Fineboundary is set to 30 minutes.
+** ClassBSubscriber
+*** Name
+*** Category (1 for A)
+*** ID
+    auto-generated
+*** bookID[4]
+    Array for storing the ID of borrowed books.
+    A category-A subscriber can borrow 4 books at a time.
+*** bookDueDate[4]
+    Array for recording the time of storage.
+*** status
+    number of books the subscriber has borrowed.
+*** fineboundary
+    Seconds for which the subscriber can keep a book.
+    Fineboundary is set to 30 minutes.
+
+* DATABASES
+** BookDatabase
+   Stores the instances of Book struct
+** SubscriberDatabaseA
+   Stores the instances of ClassASubscriber struct in the databases
+** SubscriberDatabaseB
+   Stores the instances of ClassBSubscriber struct in the databases
+* FUNCTIONS
+** add_book
+   Appends a new book to the end of the BookDatabase.
+   Accessible only by admin.
+** generate_bookID
+   Generates a new book ID by adding 1 to the highest book ID.
+   Used by add_book().
+** add_bookcopy
+   Changes the number of available copies a book has.
+   Uses UpdateBookCount(int, int)
+   Accessible only by admin.
+** UpdateBookCount
+   Arguments - book ID, an int
+   Updates the number of available copies a book has by an int.
+   Also has checks for erroneous book ID and available copies being 
+   less than 0.
+   Used by add_bookcopy(), borrow_book() and return_book()
+** add_subscriber
+   Appends a subscriber either in SubscriberDatabaseA or
+   SubscriberDatabaseB.
+   Uses generate_sub1ID() or generate_sub2ID()
+   Accessible only by admin.
+** generate_sub1ID
+   Subscriber A IDs range from 1 to 100
+   Generates a new subscriber A ID by adding 1 to the highest 
+   subscriber A ID.
+   Used by add_subscriber().
+** generate_sub2ID
+   Subscriber B IDs range from 101 to 10000
+   Generates a new subscriber B ID by adding 1 to the highest 
+   subscriber B ID.
+   Used by add_subscriber().
+** borrow_book
+   Arguments - subscriber class, subscriber ID, book ID
+   Opens two pointers to the subscriber file - reading and updating.
+   Reader pointer finds out the position of the struct corresponding tp
+   the given subscriber ID.
+   Update pointer updates the struct if the book exists and can be
+   borrowed.
+   Uses UpdateBookCount(int int).
+** return_book
+   Arguments - subscriber class, subscriber ID, book ID
+   Opens two pointers to the subscriber file - reading and updating.
+   Reader pointer finds out the position of the struct corresponding tp
+   the given subscriber ID.
+   Uses UpdateBookCount(int int).
+** search_book (primitive function)
+*** Search by name of book
+    The search works only if the entered string matches with the name 
+    of the book having the exact same value.
+*** Search by author of book
+    The search works only if the entered string matches with the name 
+    of an author of a book having the exact same value.
+** search_sub (primitive function)
+*** Search by name and class
+    The search works only if the entered string matches with the name 
+    of a subscriber having the exact same value.
+*** Search by book borrowed
+    Iterates over all the structs of the databases SubscriberDatabaseA
+    and SubscriberDatabaseB and through all the borrowed books of all the
+    subscribers.
+*** Search by subscriber with fines
+    Iterates over all the structs while calculating the fines of the
+    databases SubscriberDatabaseA and SubscriberDatabaseB.
+    Uses calculate_fine(int [], int)
+** calculate_fine
+   Arguments - book borrowing dates [], fine-boundary
+   Loops over all the entries of the subscriber's books borrowed and
+   calculates the cumulative fine of all of them.
+** display_borrowed_books
+   Arguments - book IDs [], number
+   Displays the books borrowed by a subscriber.
+** submode_A
+   Arguments - subscriber ID
+   Function for category A subscriber. 
+   Reads all the corresponding data from the struct in the
+   SubscriberDatabaseA and stores them in local variables.
+   Gives the subscriber user options for
+   borrowing, returning, searching books using the above functions,
+   Uses borrow_book(int, int, int), return_book(int, int, int),
+   search_book(), display_borrowed_books(int, int), 
+   calculate_fine(int [], int).
+** submode_B
+   Arguments - subscriber ID
+   Function for category B subscriber. 
+   Reads all the corresponding data from the struct in the
+   SubscriberDatabaseB and stores them in local variables.
+   Gives the subscriber user options for
+   borrowing, returning, searching books using the above functions,
+   Uses borrow_book(int, int, int), return_book(int, int, int),
+   search_book(), display_borrowed_books(int, int), 
+   calculate_fine(int [], int).
+** display_allbooks()
+   Displays all the books' names, authors, ID and available copies.
+** display_allsubs()
+   Displays all the subscribers and their IDs and the book that they 
+   have borrowed.
+** admin_mode()
+   Function for admin.
+   Add book, update copies of a book, add subscriber, display all 
+   subscribers, display all books, search for books, search for 
+   subscribers.
+** enquire_mode
+   Enquires about the mode of access to the library at the interface.
+** admin_enq
+   Press 0 at prompt to access administrator mode.
+   Provide password of the admin - iamadmin.
+   At most 5 trials are allowed for password.
+** sub1_enq
+   Requests for the subscriber ID, then matches all the subscriber IDs 
+   in the SubscriberDatabaseA.
+   At most 5 trials are allowed.
+** sub2_enq
+   Requests for the subscriber ID, then matches all the subscriber IDs 
+   in the SubscriberDatabaseB.
+   At most 5 trials are allowed.
+** main
+   Uses enquire_mode(), admin_enq(), admin_mode(), sub1_enq(), 
+   submode_A(), sub2_enq(), submode_B().
